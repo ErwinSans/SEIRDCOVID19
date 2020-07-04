@@ -1,8 +1,10 @@
-package com.example.seirdcovid19
+package com.example.seirdcovid19.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import com.example.seirdcovid19.R
 import com.example.seirdcovid19.api.RetrofitClient
 import com.example.seirdcovid19.model.IndonesiaResponse
 import kotlinx.android.synthetic.main.activity_main.*
@@ -16,6 +18,12 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         showIndonesia()
+
+        btnProvince.setOnClickListener{
+            Intent(this@MainActivity, ProvinceActivity::class.java).also {
+                startActivity(it)
+            }
+        }
     }
 
     private fun showIndonesia(){
@@ -29,14 +37,15 @@ class MainActivity : AppCompatActivity() {
                 call: Call<ArrayList<IndonesiaResponse>>,
                 response: Response<ArrayList<IndonesiaResponse>>
             ) {
-                val indonesia : IndonesiaResponse? = response.body()?.get(0)
-                val positive :String? = indonesia?.positif
-                val hospitilized : String? = indonesia?.dirawat
-                val recover : String? = indonesia?.sembuh
-                val death : String? = indonesia?.meninggal
+
+                val indonesia  = response.body()?.get(0)
+                val positive  = indonesia?.positif
+                val hospitalized  = indonesia?.dirawat
+                val  recover  = indonesia?.sembuh
+                val death = indonesia?.meninggal
 
                 tvPositive.text = positive
-                tvHospitalized.text = hospitilized
+                tvHospitalized.text = hospitalized
                 tvRecover.text = recover
                 tvDeath.text = death
 
